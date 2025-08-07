@@ -1,6 +1,6 @@
 import Voiture from "../models/Voiture.js";
 
-// 📌 Get all voitures
+//  Get all voitures
 export const getVoitures = async (req, res) => {
   try {
     const voitures = await Voiture.find();
@@ -10,7 +10,7 @@ export const getVoitures = async (req, res) => {
   }
 };
 
-// 📌 Get voiture by ID
+//  Get voiture by ID
 export const getVoitureById = async (req, res) => {
   try {
     const voiture = await Voiture.findById(req.params.id);
@@ -23,7 +23,7 @@ export const getVoitureById = async (req, res) => {
   }
 };
 
-// 📌 Create voiture
+//  Create voiture
 export const createVoiture = async (req, res) => {
   try {
     const voiture = new Voiture(req.body);
@@ -36,7 +36,7 @@ export const createVoiture = async (req, res) => {
   }
 };
 
-// 📌 Update voiture
+//  Update voiture
 export const updateVoiture = async (req, res) => {
   try {
     const voiture = await Voiture.findByIdAndUpdate(req.params.id, req.body, {
@@ -54,7 +54,7 @@ export const updateVoiture = async (req, res) => {
   }
 };
 
-// 📌 Delete voiture
+// Delete voiture
 export const deleteVoiture = async (req, res) => {
   try {
     const voiture = await Voiture.findByIdAndDelete(req.params.id);

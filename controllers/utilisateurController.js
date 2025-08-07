@@ -1,6 +1,6 @@
 import Utilisateur from "../models/Utilisateur.js";
 
-// 📌 Get all utilisateurs
+//  Get all utilisateurs
 export const getUtilisateurs = async (req, res) => {
   try {
     const utilisateurs = await Utilisateur.find();
@@ -10,7 +10,7 @@ export const getUtilisateurs = async (req, res) => {
   }
 };
 
-// 📌 Get utilisateur by ID
+//  Get utilisateur by ID
 export const getUtilisateurById = async (req, res) => {
   try {
     const utilisateur = await Utilisateur.findById(req.params.id);
@@ -23,7 +23,7 @@ export const getUtilisateurById = async (req, res) => {
   }
 };
 
-// 📌 Create utilisateur
+//  Create utilisateur
 export const createUtilisateur = async (req, res) => {
   try {
     const utilisateur = new Utilisateur(req.body);
@@ -36,7 +36,7 @@ export const createUtilisateur = async (req, res) => {
   }
 };
 
-// 📌 Update utilisateur
+//  Update utilisateur
 export const updateUtilisateur = async (req, res) => {
   try {
     const utilisateur = await Utilisateur.findByIdAndUpdate(
@@ -58,7 +58,7 @@ export const updateUtilisateur = async (req, res) => {
   }
 };
 
-// 📌 Delete utilisateur
+// Delete utilisateur
 export const deleteUtilisateur = async (req, res) => {
   try {
     const utilisateur = await Utilisateur.findByIdAndDelete(req.params.id);

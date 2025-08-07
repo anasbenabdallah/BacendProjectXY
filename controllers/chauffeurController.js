@@ -1,6 +1,6 @@
 import Chauffeur from "../models/Chauffeur.js";
 
-// 📌 Get all chauffeurs
+//  Get all chauffeurs
 export const getChauffeurs = async (req, res) => {
   try {
     const chauffeurs = await Chauffeur.find();
@@ -10,7 +10,7 @@ export const getChauffeurs = async (req, res) => {
   }
 };
 
-// 📌 Get chauffeur by ID
+//  Get chauffeur by ID
 export const getChauffeurById = async (req, res) => {
   try {
     const chauffeur = await Chauffeur.findById(req.params.id);
@@ -23,7 +23,7 @@ export const getChauffeurById = async (req, res) => {
   }
 };
 
-// 📌 Create a chauffeur
+//  Create a chauffeur
 export const createChauffeur = async (req, res) => {
   try {
     const chauffeur = new Chauffeur(req.body);
@@ -36,7 +36,7 @@ export const createChauffeur = async (req, res) => {
   }
 };
 
-// 📌 Update chauffeur
+// Update chauffeur
 export const updateChauffeur = async (req, res) => {
   try {
     const chauffeur = await Chauffeur.findByIdAndUpdate(
@@ -58,7 +58,7 @@ export const updateChauffeur = async (req, res) => {
   }
 };
 
-// 📌 Delete chauffeur
+//  Delete chauffeur
 export const deleteChauffeur = async (req, res) => {
   try {
     const chauffeur = await Chauffeur.findByIdAndDelete(req.params.id);
