@@ -1,43 +1,54 @@
-import Utilisateur from "../models/Utilisateur.js";
+// controllers/authController.js
 import jwt from "jsonwebtoken";
+import bcrypt from "bcryptjs";
+import Shared from "../models/Commun.js";
 
-// Register
-export const register = async (req, res) => {
-  try {
-    const { nom, email, motDePasse } = req.body;
-    const existUser = await Utilisateur.findOne({ email });
-    if (existUser)
-      return res.status(400).json({ message: "Email déjà utilisé" });
+const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
+const JWT_EXPIRES = process.env.JWT_EXPIRES || "1d";
 
-    const utilisateur = await Utilisateur.create({ nom, email, motDePasse });
-
-    const token = jwt.sign({ id: utilisateur._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
-    });
-    res.status(201).json({ token, utilisateur });
-  } catch (error) {
-    res
-      .status(500)
-      .json({ message: "Erreur inscription", error: error.message });
-  }
-};
-
-// Login
+// POST /auth/login
+// body: { email, password }
 export const login = async (req, res) => {
   try {
-    const { email, motDePasse, code2FA } = req.body;
-    const utilisateur = await Utilisateur.findOne({ email });
-    if (!utilisateur)
-      return res.status(400).json({ message: "Utilisateur non trouvé" });
+    const { email, password } = req.body || {};
+    if (!email || !password) {
+      return res.status(400).json({ message: "Email et mot de passe requis" });
+    }
 
-    const isMatch = await utilisateur.comparePassword(motDePasse);
-    if (!isMatch)
-      return res.status(400).json({ message: "Mot de passe incorrect" });
-
-    const token = jwt.sign({ id: utilisateur._id }, process.env.JWT_SECRET, {
-      expiresIn: "1d",
+    const user = await Shared.findOne({
+      type: "users",
+      "data.email": email,
+      status: true, // only active accounts
     });
-    res.json({ token, utilisateur });
+
+    if (!user) {
+      return res.status(400).json({ message: "Utilisateur non trouvé" });
+    }
+
+    const hash = user?.data?.password || "";
+    const ok = await bcrypt.compare(password, hash);
+    if (!ok) {
+      return res.status(400).json({ message: "Mot de passe incorrect" });
+    }
+
+    const token = jwt.sign({ id: user._id }, JWT_SECRET, {
+      expiresIn: JWT_EXPIRES,
+    });
+
+    // never return password
+    const safeUser = {
+      _id: user._id,
+      status: user.status,
+      type: user.type, // "users"
+      data: {
+        email: user.data.email,
+        type: user.data.type, // "super_admin"
+      },
+      createdAt: user.createdAt,
+      updatedAt: user.updatedAt,
+    };
+
+    res.json({ token, user: safeUser });
   } catch (error) {
     res.status(500).json({ message: "Erreur connexion", error: error.message });
   }

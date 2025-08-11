@@ -1,22 +1,35 @@
+// middleware/authMiddleware.js
 import jwt from "jsonwebtoken";
-import Utilisateur from "../models/Utilisateur.js";
+import Shared from "../models/Commun.js";
+
+const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
 
 export const protect = async (req, res, next) => {
-  let token;
-  if (
-    req.headers.authorization &&
-    req.headers.authorization.startsWith("Bearer")
-  ) {
-    try {
-      token = req.headers.authorization.split(" ")[1];
-      const decoded = jwt.verify(token, process.env.JWT_SECRET);
-      req.utilisateur = await Utilisateur.findById(decoded.id).select(
-        "-motDePasse"
-      );
-      return next();
-    } catch (error) {
+  const h = req.headers.authorization || "";
+  if (!h.startsWith("Bearer ")) {
+    return res.status(401).json({ message: "Accès refusé, token manquant" });
+  }
+  const token = h.split(" ")[1];
+
+  try {
+    const decoded = jwt.verify(token, JWT_SECRET);
+    const user = await Shared.findById(decoded.id);
+    if (!user || user.type !== "users" || !user.status) {
       return res.status(401).json({ message: "Token invalide" });
     }
+    req.user = user; // full Shared doc (contains data.*)
+    next();
+  } catch {
+    return res.status(401).json({ message: "Token invalide" });
   }
-  res.status(401).json({ message: "Accès refusé, token manquant" });
+};
+
+export const requireSuperAdmin = (req, res, next) => {
+  const role = req.user?.data?.type;
+  if (role !== "super_admin") {
+    return res
+      .status(403)
+      .json({ message: "Accès interdit (super admin requis)" });
+  }
+  next();
 };
