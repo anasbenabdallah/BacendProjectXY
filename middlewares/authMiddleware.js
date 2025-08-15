@@ -2,7 +2,7 @@
 import jwt from "jsonwebtoken";
 import Shared from "../models/Commun.js";
 
-const JWT_SECRET = process.env.JWT_SECRET || "dev-secret";
+const JWT_SECRET = process.env.JWT_SECRET;
 
 export const protect = async (req, res, next) => {
   const h = req.headers.authorization || "";
@@ -33,3 +33,21 @@ export const requireSuperAdmin = (req, res, next) => {
   }
   next();
 };
+// middlewares/authMiddleware.js
+
+export function authMiddleware(req, res, next) {
+  const authHeader = req.headers.authorization || "";
+  const token = authHeader.startsWith("Bearer ") ? authHeader.slice(7) : null;
+
+  if (!token) {
+    return res.status(401).json({ message: "Token manquant" });
+  }
+
+  try {
+    const decoded = jwt.verify(token, process.env.JWT_SECRET || "changeme");
+    req.userId = decoded.id;
+    next();
+  } catch (error) {
+    return res.status(401).json({ message: "Token invalide" });
+  }
+}

@@ -10,7 +10,14 @@ import {
 
 const router = express.Router();
 
-const ALLOWED_TYPES = ["enums", "cars", "drivers", "users"];
+const ALLOWED_TYPES = [
+  "enums",
+  "cars",
+  "drivers",
+  "users",
+  "affectations",
+  "gps",
+];
 
 // Guard for :type in list/get-by-id routes
 router.param("type", (req, res, next, type) => {
