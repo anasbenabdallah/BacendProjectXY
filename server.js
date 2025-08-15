@@ -8,6 +8,7 @@ import communRoutes from "./routes/communRoutes.js";
 import seedSuperAdmin from "./seed/superadmin.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
 import nodemailer from "nodemailer";
+import pgDataRoutes from "./routes/pgDataRoutes.js";
 
 const app = express();
 app.use(cors());
@@ -17,6 +18,7 @@ app.use(express.json());
 app.use("/api", communRoutes);
 app.use("/api/auth", authRoutes); // ← Ajouter /api pour cohérence
 app.use("/dashboard", dashboardRoutes);
+app.use("/api-pg", pgDataRoutes);
 
 const PORT = process.env.PORT || 5000;
 
