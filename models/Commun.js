@@ -12,7 +12,7 @@ const communSchema = new mongoose.Schema(
     },
     type: {
       type: String,
-      enum: ["enums", "cars", "drivers", "users", "affectations", "gps"],
+      enum: ["enums", "cars", "drivers", "users", "affectations", "lists"],
       default: "enums",
     },
   },

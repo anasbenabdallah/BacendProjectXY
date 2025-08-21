@@ -16,7 +16,7 @@ const ALLOWED_TYPES = [
   "drivers",
   "users",
   "affectations",
-  "gps",
+  "lists",
 ];
 
 // Guard for :type in list/get-by-id routes

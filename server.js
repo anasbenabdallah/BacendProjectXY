@@ -7,7 +7,6 @@ import authRoutes from "./routes/authRoutes.js";
 import communRoutes from "./routes/communRoutes.js";
 import seedSuperAdmin from "./seed/superadmin.js";
 import dashboardRoutes from "./routes/dashboardRoutes.js";
-import nodemailer from "nodemailer";
 import pgDataRoutes from "./routes/pgDataRoutes.js";
 
 const app = express();

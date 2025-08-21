@@ -7,6 +7,6 @@ const router = express.Router();
 
 router.post("/login", login);
 router.post("/set-password", setPassword);
-router.get("/me", authMiddleware, me); // ✅ nouvelle route
+router.get("/me", authMiddleware, me);
 
 export default router;

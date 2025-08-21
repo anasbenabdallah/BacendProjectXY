@@ -14,7 +14,7 @@ const ALLOWED_TYPES = [
   "drivers",
   "users",
   "affectations",
-  "gps",
+  "lists",
 ]; // +affectations
 const isId = (v) => mongoose.Types.ObjectId.isValid(v);
 

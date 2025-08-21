@@ -1,4 +1,3 @@
-// seeds/seedSuperAdmin.js
 import bcrypt from "bcryptjs";
 import Shared from "../models/Commun.js";
 
@@ -32,6 +31,6 @@ export default async function seedSuperAdmin() {
     console.log("✅ Super admin created:", doc.data.email);
   } catch (error) {
     console.error("❌ Error creating super admin:", error.message);
-    throw error; // ← Propager l'erreur
+    throw error;
   }
 }
